@@ -1,0 +1,31 @@
+---
+
+- set_fact: 
+    private_dns: '{{ec2_instance.tags["private_dns"]}}'
+  when: ec2_instance.tags["private_dns"] is defined
+  tags: configuration
+
+- set_fact: 
+    private_domain: '{{ ec2_instance.tags["private_domain"] }}'
+  when: ec2_instance.tags["private_domain"] is defined
+  tags: configuration
+
+- set_fact: 
+    discord_message_webhook_id: '{{ec2_instance.tags["discord_message_webhook_id"]}}'
+  when: ec2_instance.tags["discord_message_webhook_id"] is defined
+  tags: configuration
+
+- set_fact: 
+    discord_webhook: '{{ec2_instance.tags["discord_webhook"]}}'
+  when: ec2_instance.tags["discord_webhook"] is defined
+  tags: configuration
+
+- set_fact: 
+    root_password: '{{ec2_instance.tags["root_password"]}}'
+  when: ec2_instance.tags["root_password"] is defined
+  tags: configuration
+
+- set_fact: 
+    discord_message_webhook_token: '{{ec2_instance.tags["discord_message_webhook_token"]}}'
+  when: ec2_instance.tags["discord_message_webhook_token"] is defined
+  tags: configuration

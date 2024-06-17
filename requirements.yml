@@ -1,0 +1,6 @@
+---
+roles:
+  - name: users
+    src: robertdebock.users
+  - name: hashicorp
+    src: robertdebock.hashicorp

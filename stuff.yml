@@ -1,0 +1,18 @@
+---
+- import_role:
+    name: aws
+  vars:
+    dns_record_list:
+    - name: "{{ private_dns }}.{{ private_domain }}"
+      zone: "{{ private_domain }}"
+      type: A
+      value: "{{ private_ip }}"
+      private: true
+      ttl: 120
+
+- include_role:
+    name: consul
+  vars:
+    consul_bootstrap_expect: 3
+    consul_retry_join: '["provider=aws tag_key=consul_cluster tag_value={{ consul_cluster_tag_value }}"]'
+    consul_recursors: ['127.0.0.1:53']
