@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config|
     aws.security_groups = ["sg-0e11a618872a5a387"]
         # public-ssh
     aws.ami = "ami-0bcfb5f8a3f117a50"
-    aws.instance_type = "r6g.medium"
+    aws.instance_type = "t4g.small"
     aws.subnet_id = "subnet-0f46c97c53ea11e2e"
     aws.associate_public_ip = true
     aws.iam_instance_profile_name = "bootstrap-role"

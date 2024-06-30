@@ -1,10 +1,7 @@
-- name: grafana
+- name: consul
   hosts: all
   become: yes  # Use sudo to execute tasks
-
-  vars:
-    - discord_message_environment: "{{ environment_name }}"
-
+      
   vars_files:
     - defaults.yml
 
@@ -39,16 +36,25 @@
         users_groups: "{{ access.users_groups }}"
         users: "{{ access.users }}"
 
+    - include_role:
+        name: telegraf
+      vars:
+        telegraf_agent_hostname: "{{ ansible_fqdn }}"
+        telegraf_agent_external_interval: True
+      when: telegraf_config_uri is defined
+      
     - name: stuff
       import_tasks: stuff.yml
 
-    - include_role:
+    - name: success message
+      include_role:
         name: discord
       
     rescue:
-      - name: send fail message
+      - name: fail message
         include_role:
           name: discord
+        no_log: True
       - name: re-raise the error
         fail:
           msg: "{{ ansible_failed_result }}"
