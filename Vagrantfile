@@ -5,14 +5,20 @@
 # vagrant up --provider=aws
 # vagrant destroy -f && vagrant up --provider=aws
 
+TOPIC_NAME = "errors"
+ACCOUNT_ID = "992382682634"
 AWS_REGION = "il-central-1"
 Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     set -euxo pipefail
+    echo "start vagrant file"
     cd /vagrant
     aws s3 cp s3://resource-opinion-stg/get-pip.py - | python3
     echo $PWD
-    bash main.sh -r #{AWS_REGION}
+    export VAULT_PASSWORD=#{`op read "op://Security/ansible-vault inqwise-stg/password"`.strip!}
+    echo "$VAULT_PASSWORD" > vault_password
+    curl -s https://raw.githubusercontent.com/inqwise/ansible-automation-toolkit/master/main_amzn2023.sh | bash -s -- -r #{AWS_REGION} -e "playbook_name=mysql-test discord_message_owner_name=#{Etc.getpwuid(Process.uid).name}" --topic-name #{TOPIC_NAME} --account-id #{ACCOUNT_ID}
+    rm vault_password
   SHELL
 
   config.vm.provider :aws do |aws, override|
@@ -24,7 +30,8 @@ Vagrant.configure("2") do |config|
     aws.keypair_name = Etc.getpwuid(Process.uid).name
     override.vm.allowed_synced_folder_types = [:rsync]
     override.vm.synced_folder ".", "/vagrant", type: :rsync, rsync__exclude: ['.git/','ansible-galaxy/'], disabled: false
-    override.vm.synced_folder '../ansible-common-collection', '/vagrant/ansible-galaxy', type: :rsync, rsync__exclude: '.git/', disabled: false
+    collection_path = ENV['COMMON_COLLECTION_PATH'] || '~/git/ansible-common-collection'
+    override.vm.synced_folder collection_path, '/vagrant/ansible-galaxy', type: :rsync, rsync__exclude: '.git/', disabled: false
     
     aws.region = AWS_REGION
     aws.security_groups = ["sg-0e11a618872a5a387"]
