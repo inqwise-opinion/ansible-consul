@@ -1,5 +1,6 @@
 ---
-- import_role:
+- name: aws
+  ansible.builtin.import_role:
     name: aws
   vars:
     dns_record_list:
@@ -9,10 +10,45 @@
       value: "{{ private_ip }}"
       private: true
       ttl: 120
+    tags_facts:
+      private_dns: "private_dns"
+      consul_cluster: "consul_cluster"
+      consul_alt_domain: "consul_alt_domain"
 
-- include_role:
+- name: Add HashiCorp repository
+  ansible.builtin.yum_repository:
+    name: hashicorp
+    description: HashiCorp Stable - $basearch
+    baseurl: https://rpm.releases.hashicorp.com/AmazonLinux/latest/$basearch/stable
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://rpm.releases.hashicorp.com/gpg
+  tags: installation
+
+- name: Print network interfaces
+  ansible.builtin.debug:
+    var: ansible_facts.interfaces
+  tags: debug
+
+- name: Install Consul
+  ansible.builtin.include_role:
     name: consul
+    apply:
+      tags: installation
   vars:
-    consul_bootstrap_expect: 3
-    consul_retry_join: '["provider=aws tag_key=consul_cluster tag_value={{ consul_cluster_tag_value }}"]'
+    consule_service_started_and_enabled: false
+  tags: installation
+
+- name: Configure Consul
+  ansible.builtin.include_role:
+    name: consul
+    apply:
+      tags: configuration
+  vars:
+    consul_bind_addr: "{{'{{ GetInterfaceIP \\\"ens5\\\" }}'}}"
+    consul_retry_join: '["provider=aws tag_key=consul_cluster tag_value={{ consul_cluster }}"]'
     consul_recursors: ['127.0.0.1:53']
+    consul_license: "{}"
+    consul_bootstrap_expect: 3
+    consul_install_package: false
+  tags: configuration

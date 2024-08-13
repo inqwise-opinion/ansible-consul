@@ -1,0 +1,4 @@
+---
+roles:
+  - name: consul
+    src: robertdebock.consul

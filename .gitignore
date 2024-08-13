@@ -1,3 +1,7 @@
 /**/.*
 /**/.*/
 !/.gitignore
+main.sh
+main.yml
+goldenimage_script.sh
+manifest.json
