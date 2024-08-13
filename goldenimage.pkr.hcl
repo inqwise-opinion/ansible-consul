@@ -21,6 +21,7 @@ source "amazon-ebs" "amazon_linux2023" {
   instance_type         = "t4g.small"
   region                = "${var.region}"
   #ami_regions           = ["us-west-2"]
+  #ami_users             = ["123456789012", "987654321098"]  # List of AWS Account IDs granted launch permissions for the created AMI
   encrypt_boot          = false
   profile               = "${var.aws_profile}"
   iam_instance_profile  = "PackerRole"
@@ -57,7 +58,6 @@ source "amazon-ebs" "amazon_linux2023" {
     app       = "${var.app}"
     version   = "${var.tag}"
     timestamp = "${local.timestamp}"
-    playbook_name = "ansible-${var.app}"
   }
 }
 
@@ -85,5 +85,17 @@ build {
       profile   = "${var.aws_profile}"
       region    = "${var.region}"
     }
+  }
+
+  post-processor "shell-local" {
+    inline = [
+        "if [ -f ./goldenimage_postprocess_temp.sh ]; then",
+        "    echo 'Executing local script: goldenimage_postprocess_temp.sh';",
+        "    bash ./goldenimage_postprocess_temp.sh;",
+        "else",
+        "    echo 'Local script not found. Executing remote script: https://raw.githubusercontent.com/inqwise/ansible-automation-toolkit/default/goldenimage_postprocess.sh';",
+        "    curl -s https://raw.githubusercontent.com/inqwise/ansible-automation-toolkit/default/goldenimage_postprocess.sh | bash;",
+        "fi"
+    ]
   }
 }
