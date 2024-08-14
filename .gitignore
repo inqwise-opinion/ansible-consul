@@ -5,6 +5,8 @@ main.sh
 main.yml
 goldenimage_script.sh
 manifest.json
-goldenimage_postprocess_temp.sh
 goldenimage_result.json
-update_ami_temp.sh
+requirements-test.yml
+goldenimage_postprocess-test.sh
+goldenimage_script-test.sh
+update_ami-test.sh

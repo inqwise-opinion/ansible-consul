@@ -68,12 +68,12 @@ build {
   ]
 
   provisioner "shell" {
-    scripts = [
-      "goldenimage_script.sh"
-    ]
-    #inline = [
-    #  "curl --connect-timeout 2.37 -m 20 -o /tmp/goldenimage_script.sh https://raw.githubusercontent.com/inqwise/ansible-automation-toolkit/default/goldenimage_script_amzn2023.sh && bash /tmp/goldenimage_script.sh --tags installation",
+    #scripts = [
+    #  "goldenimage_script-test.sh"
     #]
+    inline = [
+      "curl --connect-timeout 2.37 -m 20 -o /tmp/goldenimage_script.sh https://raw.githubusercontent.com/inqwise/ansible-automation-toolkit/default/goldenimage_script_amzn2023.sh && bash /tmp/goldenimage_script.sh --tags installation",
+    ]
   }
 
   post-processor "manifest" {
@@ -89,9 +89,9 @@ build {
 
   post-processor "shell-local" {
     inline = [
-        "if [ -f ./goldenimage_postprocess_temp.sh ]; then",
-        "    echo 'Executing local script: goldenimage_postprocess_temp.sh';",
-        "    bash ./goldenimage_postprocess_temp.sh;",
+        "if [ -f ./goldenimage_postprocess-test.sh ]; then",
+        "    echo 'Executing local script: goldenimage_postprocess-test.sh';",
+        "    bash ./goldenimage_postprocess-test.sh;",
         "else",
         "    echo 'Local script not found. Executing remote script: https://raw.githubusercontent.com/inqwise/ansible-automation-toolkit/default/goldenimage_postprocess.sh';",
         "    curl -s https://raw.githubusercontent.com/inqwise/ansible-automation-toolkit/default/goldenimage_postprocess.sh | bash;",
