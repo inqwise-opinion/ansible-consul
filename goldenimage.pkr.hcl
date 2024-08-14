@@ -37,7 +37,7 @@ source "amazon-ebs" "amazon_linux2023" {
 
   source_ami_filter {
     filters = {
-      name                = "al2023-*-kernel-6.1-arm64"
+      name                = "al2023-ami-2023.*-kernel-6.1-arm64"
       root-device-type    = "ebs"
       virtualization-type = "hvm"
     }
