@@ -15,7 +15,7 @@ TOPIC_NAME = "errors"
 ACCOUNT_ID = "992382682634"
 AWS_REGION = "il-central-1"
 MAIN_SH_ARGS = <<MARKER
--r #{AWS_REGION} -e "playbook_name=ansible-consul discord_message_owner_name=#{Etc.getpwuid(Process.uid).name}" --topic-name #{TOPIC_NAME} --account-id #{ACCOUNT_ID}
+-e "playbook_name=ansible-consul discord_message_owner_name=#{Etc.getpwuid(Process.uid).name}" --account-id #{ACCOUNT_ID}
 MARKER
 NODE_COUNT = 1
 CLUSTER_NAME = "#{Etc.getpwuid(Process.uid).name}-test"
@@ -68,7 +68,7 @@ Vagrant.configure("2") do |config|
         common_collection_path = ENV['COMMON_COLLECTION_PATH'] || '~/git/ansible-common-collection'
         stacktrek_collection_path = ENV['STACKTREK_COLLECTION_PATH'] || '~/git/ansible-stack-trek'
         override.vm.synced_folder common_collection_path + '/inqwise/common', '/vagrant/inqwise/common', type: :rsync, rsync__exclude: '.git/', disabled: false
-        override.vm.synced_folder stacktrek_collection_path + '/inqwise/stacktrek', '/vagrant/inqwise/stacktrek', type: :rsync, rsync__exclude: '.git/', disabled: false
+        #override.vm.synced_folder stacktrek_collection_path + '/inqwise/stacktrek', '/vagrant/collections/ansible_collections/inqwise/stacktrek', type: :rsync, rsync__exclude: '.git/', disabled: false
           
         aws.region = AWS_REGION
         aws.security_groups = ["sg-0e11a618872a5a387","sg-00cd6b533fef19ceb"]

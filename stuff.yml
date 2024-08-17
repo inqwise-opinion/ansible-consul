@@ -32,23 +32,15 @@
 
 - name: Install Consul
   ansible.builtin.include_role:
-    name: consul
-    apply:
-      tags: installation
-  vars:
-    consule_service_started_and_enabled: false
+    name: inqwise.common.consul
   tags: installation
 
 - name: Configure Consul
   ansible.builtin.include_role:
-    name: consul
-    apply:
-      tags: configuration
+    name: inqwise.common.consul
   vars:
     consul_bind_addr: "{{'{{ GetInterfaceIP \\\"ens5\\\" }}'}}"
     consul_retry_join: '["provider=aws tag_key=consul_cluster tag_value={{ consul_cluster }}"]'
     consul_recursors: ['127.0.0.1:53']
-    consul_license: "{}"
     consul_bootstrap_expect: 3
-    consul_install_package: false
   tags: configuration
