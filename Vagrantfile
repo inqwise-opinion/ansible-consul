@@ -15,7 +15,7 @@ TOPIC_NAME = "errors"
 ACCOUNT_ID = "992382682634"
 AWS_REGION = "il-central-1"
 MAIN_SH_ARGS = <<MARKER
--e "playbook_name=ansible-consul discord_message_owner_name=#{Etc.getpwuid(Process.uid).name}" --account-id #{ACCOUNT_ID}
+-e "playbook_name=ansible-consul discord_message_owner_name=#{Etc.getpwuid(Process.uid).name}"
 MARKER
 NODE_COUNT = 1
 CLUSTER_NAME = "#{Etc.getpwuid(Process.uid).name}-test"
