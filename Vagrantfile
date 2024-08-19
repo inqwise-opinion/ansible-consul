@@ -81,7 +81,7 @@ Vagrant.configure("2") do |config|
         aws.tags = {
           Name: "consul-test-#{Etc.getpwuid(Process.uid).name}",
           consul_cluster: "#{CLUSTER_NAME}",
-          private_dns: "consul"
+          private_dns: "consul-test-#{Etc.getpwuid(Process.uid).name}"
         }
       end
     end

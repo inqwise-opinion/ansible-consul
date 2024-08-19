@@ -27,7 +27,8 @@ source "amazon-ebs" "amazon_linux2023" {
   iam_instance_profile  = "PackerRole"
   ssh_username          = "ec2-user"
   spot_price            = "auto"
-  
+  skip_create_ami       = false # for debug
+
   metadata_options {
     instance_metadata_tags = "enabled"
     http_endpoint               = "enabled"
@@ -72,7 +73,7 @@ build {
     #  "goldenimage_script-test.sh"
     #]
     inline = [
-      "curl --connect-timeout 2.37 -m 20 -o /tmp/goldenimage_script.sh https://raw.githubusercontent.com/inqwise/ansible-automation-toolkit/default/goldenimage_script_amzn2023.sh && bash /tmp/goldenimage_script.sh --tags installation",
+      "curl --connect-timeout 2.37 -m 20 -o /tmp/goldenimage.sh https://raw.githubusercontent.com/inqwise/ansible-automation-toolkit/default/goldenimage.sh && bash /tmp/goldenimage.sh --tags installation",
     ]
   }
 
