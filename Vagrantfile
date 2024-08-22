@@ -71,7 +71,7 @@ Vagrant.configure("2") do |config|
         #override.vm.synced_folder stacktrek_collection_path + '/inqwise/stacktrek', '/vagrant/collections/ansible_collections/inqwise/stacktrek', type: :rsync, rsync__exclude: '.git/', disabled: false
           
         aws.region = AWS_REGION
-        aws.security_groups = ["sg-0e11a618872a5a387","sg-00cd6b533fef19ceb"]
+        aws.security_groups = ["sg-020afd8fd0fa9fd0b","sg-00cd6b533fef19ceb"]
         # public-ssh
         aws.ami = "ami-009b671c6592c55db"
         aws.instance_type = "t4g.small"
