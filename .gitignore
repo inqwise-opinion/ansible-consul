@@ -1,9 +1,11 @@
 /**/.*
 /**/.*/
 !/.gitignore
+!/.github
 *-test.*
 main.sh
-main.yml
+*/main.yml
 goldenimage_script.sh
 manifest.json
 goldenimage_result.json
+goldenimage.pkr.hcl

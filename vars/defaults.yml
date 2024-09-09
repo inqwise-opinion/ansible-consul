@@ -3,7 +3,7 @@ discord_webhook: https://discord.com/api/webhooks/{{ discord_message_webhook_id 
 discord_channel: "#notifications"
 private_dns: consul
 private_domain: opinion-stg.local
-private_ip: "{{ ansible_default_ipv4['address'] }}"
+private_ip: "{{ ansible_default_ipv4.address }}"
 aws_iam_role: "consul-role"
 app_user: "consul"
 app_group: "{{ app_user }}"
