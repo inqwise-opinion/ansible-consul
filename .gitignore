@@ -3,9 +3,9 @@
 !/.gitignore
 !/.github
 *-test.*
-main.sh
-*/main.yml
-goldenimage_script.sh
-manifest.json
-goldenimage_result.json
-goldenimage.pkr.hcl
+/main.sh
+/main.yml
+/goldenimage_script.sh
+/manifest.json
+/goldenimage_result.json
+/goldenimage.pkr.hcl
