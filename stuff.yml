@@ -19,7 +19,7 @@
   ansible.builtin.import_role:
     name: inqwise.common.consul
   vars:
-    consul_bind_addr: "{{'{{ GetInterfaceIP \\\"ens5\\\" }}'}}"
+    consul_bind_addr: "{{'{{ GetInterfaceIP \\\"'+ active_interfaces | first +'\\\" }}'}}"
     consul_retry_join: '["provider=aws tag_key=consul_cluster tag_value={{ consul_cluster }}"]'
     consul_recursors: ['127.0.0.1:53']
     consul_bootstrap_expect: 3

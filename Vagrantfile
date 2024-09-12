@@ -67,8 +67,8 @@ Vagrant.configure("2") do |config|
         override.vm.synced_folder ".", "/vagrant", type: :rsync, rsync__exclude: ['.git/','inqwise/'], disabled: false
         common_collection_path = ENV['COMMON_COLLECTION_PATH'] || '~/git/ansible-common-collection'
         stacktrek_collection_path = ENV['STACKTREK_COLLECTION_PATH'] || '~/git/ansible-stack-trek'
-        override.vm.synced_folder common_collection_path + '/inqwise/common', '/vagrant/inqwise/common', type: :rsync, rsync__exclude: '.git/', disabled: false
-        #override.vm.synced_folder stacktrek_collection_path + '/inqwise/stacktrek', '/vagrant/collections/ansible_collections/inqwise/stacktrek', type: :rsync, rsync__exclude: '.git/', disabled: false
+        override.vm.synced_folder common_collection_path, '/vagrant/inqwise/common', type: :rsync, rsync__exclude: '.git/', disabled: false
+        #override.vm.synced_folder stacktrek_collection_path, '/vagrant/collections/ansible_collections/inqwise/stacktrek', type: :rsync, rsync__exclude: '.git/', disabled: false
           
         aws.region = AWS_REGION
         aws.security_groups = ["sg-020afd8fd0fa9fd0b","sg-00cd6b533fef19ceb"]
