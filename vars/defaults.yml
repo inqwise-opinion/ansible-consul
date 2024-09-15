@@ -12,5 +12,7 @@ users_groups:
 users:
   - name: "{{ app_user }}"
     group: "{{ app_group }}"
+    shell: /sbin/nologin
+    system: true
     append: yes
 consul_cluster: v1

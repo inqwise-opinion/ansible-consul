@@ -1,11 +1,8 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
 # vagrant plugin install vagrant-aws 
 # vagrant up --provider=aws
 # vagrant destroy -f && vagrant up --provider=aws
 
-#-r il-central-1 -e "playbook_name=ansible-consul discord_message_owner_name=terra" --topic-name errors --account-id 992382682634
+#-r il-central-1 -e "playbook_name=ansible-consul discord_message_owner_name=terra"
 ## optional:
 # export COMMON_COLLECTION_PATH='~/git/inqwise/ansible/ansible-common-collection'
 # export STACKTREK_COLLECTION_PATH='~/git/inqwise/ansible/ansible-stack-trek'
@@ -17,7 +14,7 @@ AWS_REGION = "il-central-1"
 MAIN_SH_ARGS = <<MARKER
 -e "playbook_name=ansible-consul discord_message_owner_name=#{Etc.getpwuid(Process.uid).name}"
 MARKER
-NODE_COUNT = 1
+NODE_COUNT = 3
 CLUSTER_NAME = "#{Etc.getpwuid(Process.uid).name}-test"
 Vagrant.configure("2") do |config|
   (1..NODE_COUNT).each do |i|
@@ -29,7 +26,7 @@ Vagrant.configure("2") do |config|
       #   cd /deployment/playbook
       #   export ANSIBLE_VERBOSITY=0
       #   export ANSIBLE_DISPLAY_SKIPPED_HOSTS=false
-      #   export VAULT_PASSWORD=#{`op read "op://Security/ansible-vault inqwise-stg/password"`.strip!}
+      #   export VAULT_PASSWORD=#{`op read "op://Security/ansible-vault inqwise-opinion-stg/password"`.strip!}
       #   echo "$VAULT_PASSWORD" > vault_password
       #   bash main.sh #{MAIN_SH_ARGS}
       #   rm vault_password
@@ -42,7 +39,7 @@ Vagrant.configure("2") do |config|
         source /tmp/ansibleenv/bin/activate
         aws s3 cp s3://resource-opinion-stg/get-pip.py - | python3
         echo $PWD
-        export VAULT_PASSWORD=#{`op read "op://Security/ansible-vault inqwise-stg/password"`.strip!}
+        export VAULT_PASSWORD=#{`op read "op://Security/ansible-vault inqwise-opinion-stg/password"`.strip!}
         echo "$VAULT_PASSWORD" > vault_password
         export ANSIBLE_VERBOSITY=0
         export ANSIBLE_DISPLAY_SKIPPED_HOSTS=false

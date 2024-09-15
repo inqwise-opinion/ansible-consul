@@ -14,13 +14,14 @@
       private_dns: "private_dns"
       consul_cluster: "consul_cluster"
       consul_alt_domain: "consul_alt_domain"
+      bootstrap_expect: "consul_bootstrap_expect"
+      consul_encrypt: "consul_encrypt"
+
 
 - name: Consul role
   ansible.builtin.import_role:
     name: inqwise.common.consul
   vars:
-    consul_bind_addr: "{{'{{ GetInterfaceIP \\\"'+ active_interfaces | first +'\\\" }}'}}"
+    consul_bind_addr: "{{ private_ip }}"
     consul_retry_join: '["provider=aws tag_key=consul_cluster tag_value={{ consul_cluster }}"]'
-    consul_recursors: ['127.0.0.1:53']
-    consul_bootstrap_expect: 3
     consul_datacenter: "{{ environment_name }}-dc-1"
