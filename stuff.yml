@@ -25,3 +25,46 @@
     consul_retry_join: '["provider=aws tag_key=consul_cluster tag_value={{ consul_cluster }}"]'
     consul_datacenter: "{{ environment_name }}-dc-1"
     consul_bootstrap_expect: 3
+
+- name: Install Alloy
+  include_role:
+    name: alloy
+  vars:
+    alloy_user_groups:
+      - systemd-journal
+    config: |
+      loki.write "local" {
+        endpoint {
+          url = "http://loki.{{ private_domain }}:3100/loki/api/v1/push"
+        }
+      }
+
+      loki.relabel "journal" {
+        forward_to = []
+
+        rule {
+          source_labels = ["__journal__systemd_unit"]
+          regex         = "(consul.service|telegraf.service)"
+          action        = "keep"
+        }
+        rule {
+          source_labels = ["__journal__systemd_unit"]
+          target_label  = "unit"
+        }
+        rule {
+          source_labels = ["__journal__hostname"]
+          target_label  = "instance"
+        }
+      }
+
+      loki.source.journal "read" {
+        forward_to = [
+          loki.write.local.receiver,
+        ]
+        relabel_rules = loki.relabel.journal.rules
+        labels = {
+          "job" = "integrations/node_exporter",
+          "app" = "consul",
+        }
+      }
+  tags: always
