@@ -15,6 +15,7 @@
       consul_cluster: "consul_cluster"
       consul_alt_domain: "consul_alt_domain"
       consul_encrypt: "consul_encrypt"
+      consul_node_name: "consul_node_name"
 
 
 - name: Consul role
